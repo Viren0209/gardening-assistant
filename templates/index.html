@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Gardening AI Assistant&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="/static/style.css"&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Gardening AI Assistant&lt;/h1&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- General Advice Section --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Ask a Gardening Question&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="ask-form"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;textarea id="ask-query" placeholder="e.g., How often should I water my tomatoes?"&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit"&gt;Get Advice&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="result" id="ask-result"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Plant Identification Section --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Identify a Plant&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="identify-form"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="file" id="image-file" accept="image/*" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit"&gt;Identify Plant&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="result" id="identify-result"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Disease Diagnosis Section --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Diagnose a Plant Problem&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="diagnose-form"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;textarea id="diagnose-query" placeholder="e.g., My rose leaves have yellow spots and a fine webbing."&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit"&gt;Diagnose&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="result" id="diagnose-result"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// We will add JavaScript code here later to make the buttons work.</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// This makes sure our code only runs after the whole page has loaded</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.addEventListener('DOMContentLoaded', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const askForm = document.getElementById('ask-form');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const identifyForm = document.getElementById('identify-form');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const diagnoseForm = document.getElementById('diagnose-form');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// --- Get User Location (for the diagnosis feature) ---</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let userCoords = { lat: null, lon: null };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// This asks the user for permission to get their location</p>
+<p class="p1"><span class="Apple-converted-space">                </span>navigator.geolocation.getCurrentPosition(position =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>userCoords.lat = position.coords.latitude;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>userCoords.lon = position.coords.longitude;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log("User location captured for weather data.");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}, () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log("User did not provide location.");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// --- Ask Form Handler ---</p>
+<p class="p1"><span class="Apple-converted-space">                </span>askForm.addEventListener('submit', async (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>e.preventDefault(); // This stops the page from reloading</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const resultDiv = document.getElementById('ask-result');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = 'Thinking...'; // Show a loading message</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const response = await fetch('/ask', {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>body: JSON.stringify({ query: document.getElementById('ask-query').value })</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const data = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = data.answer || data.error;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// --- Identify Form Handler ---</p>
+<p class="p1"><span class="Apple-converted-space">                </span>identifyForm.addEventListener('submit', async (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const resultDiv = document.getElementById('identify-result');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = 'Identifying...';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const formData = new FormData();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>formData.append('image', document.getElementById('image-file').files[0]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const response = await fetch('/identify', { method: 'POST', body: formData });</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const data = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = data.message || data.error;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// --- Diagnose Form Handler ---</p>
+<p class="p1"><span class="Apple-converted-space">                </span>diagnoseForm.addEventListener('submit', async (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const resultDiv = document.getElementById('diagnose-result');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = 'Diagnosing...';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const response = await fetch('/diagnose', {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>headers: { 'Content-Type': 'application/json' },</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>body: JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>query: document.getElementById('diagnose-query').value,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>lat: userCoords.lat, // We send the location we got earlier</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>lon: userCoords.lon</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>})</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const data = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = data.answer || data.error;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/script&gt;</p>
+</body>
+</html>
