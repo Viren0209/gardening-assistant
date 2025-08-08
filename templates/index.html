@@ -19,7 +19,7 @@
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Gardening Assistant&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Flask/Jinja2 static CSS link --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Link to static CSS using Flask's url_for function --&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/head&gt;</span></p>
 <p class="p1"><span class="s1">&lt;body&gt;</span></p>
@@ -44,27 +44,28 @@
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>queryInput.addEventListener('keypress', function(event) {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (event.key === 'Enter') sendMessage();</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>uploadButton.addEventListener('click', () =&gt; imageUploadInput.click());</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>imageUploadInput.addEventListener('change', handleImageUpload);</span></p>
 <p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function appendMessage(text, className) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const msg = document.createElement('div');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>msg.className = 'message ' + className;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>msg.textContent = text;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>chatContainer.appendChild(msg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const msgDiv = document.createElement('div');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>msgDiv.className = className ? 'message ' + className : 'message';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>msgDiv.textContent = text;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>chatContainer.appendChild(msgDiv);</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>chatContainer.scrollTop = chatContainer.scrollHeight;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return msgDiv;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showInitialGreeting() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage("Hi there! How can I help you with your gardening today?", "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage("Hi there! How can I help you with your gardening today?", 'bot-message');</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.onload = showInitialGreeting;</span></p>
 <p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function sendMessage() {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const userQuery = queryInput.value.trim();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (userQuery === '') return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage(userQuery, "user-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!userQuery) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage(userQuery, 'user-message');</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>queryInput.value = '';</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>getGeolocationAndSendMessage(userQuery);</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
@@ -81,40 +82,48 @@
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function sendQueryToServer(userQuery, lat, lon) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const loadingMsg = appendMessage('Thinking...', 'loading-indicator');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const loading = appendMessage('Thinking...', 'loading-indicator');</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const response = await fetch('/ask', {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const res = await fetch('/ask', {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>method: 'POST',</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>headers: {'Content-Type': 'application/json'},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>body: JSON.stringify({ query: userQuery, lat: lat, lon: lon })</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>body: JSON.stringify({ query: userQuery, lat, lon })</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const data = await response.json();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (data.answer) appendMessage(data.answer, "bot-message");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else appendMessage("Error: " + (data.error || "Unknown error"), "bot-message");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (error) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appendMessage("An error occurred. Please try again.", "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const data = await res.json();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loading);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (data.answer) appendMessage(data.answer, 'bot-message');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else if (data.response) appendMessage(data.response, 'bot-message');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else appendMessage(data.error || "No response.", 'bot-message');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loading);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appendMessage("Error getting answer. Please try again.", 'bot-message');</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function handleImageUpload(event) {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const file = event.target.files[0];</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!file) return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage("Image uploaded. Identifying...", "user-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage("Image uploaded. Identifying...", 'user-message');</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>queryInput.value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const loadingMsg = appendMessage('Thinking...', 'loading-indicator');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const loading = appendMessage('Thinking...', 'loading-indicator');</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const formData = new FormData();</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>formData.append('image', file);</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const response = await fetch('/identify', { method: 'POST', body: formData });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const data = await response.json();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (data.message) appendMessage(data.message, "bot-message");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else appendMessage("Error: " + (data.error || "Unknown error"), "bot-message");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (error) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appendMessage("An error occurred while identifying the plant.", "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const res = await fetch('/identify', {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>method: 'POST',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>body: formData,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const data = await res.json();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loading);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (data.plant_name)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>appendMessage(`I think this plant is a: ${data.plant_name}`, 'bot-message');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else if (data.message)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>appendMessage(data.message, 'bot-message');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>appendMessage('Sorry, I could not identify that plant.', 'bot-message');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loading);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appendMessage('An error occurred while identifying the plant.', 'bot-message');</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
