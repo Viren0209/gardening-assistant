@@ -7,122 +7,118 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2575.7">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Gardening AI Assistant&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="/static/style.css"&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Gardening AI Assistant&lt;/h1&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- General Advice Section --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Ask a Gardening Question&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="ask-form"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;textarea id="ask-query" placeholder="e.g., How often should I water my tomatoes?"&gt;&lt;/textarea&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit"&gt;Get Advice&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="result" id="ask-result"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Plant Identification Section --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Identify a Plant&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="identify-form"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="file" id="image-file" accept="image/*" required&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit"&gt;Identify Plant&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="result" id="identify-result"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Disease Diagnosis Section --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Diagnose a Plant Problem&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;form id="diagnose-form"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;textarea id="diagnose-query" placeholder="e.g., My rose leaves have yellow spots and a fine webbing."&gt;&lt;/textarea&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit"&gt;Diagnose&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="result" id="diagnose-result"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// We will add JavaScript code here later to make the buttons work.</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>// This makes sure our code only runs after the whole page has loaded</p>
-<p class="p1"><span class="Apple-converted-space">            </span>document.addEventListener('DOMContentLoaded', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const askForm = document.getElementById('ask-form');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const identifyForm = document.getElementById('identify-form');</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const diagnoseForm = document.getElementById('diagnose-form');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// --- Get User Location (for the diagnosis feature) ---</p>
-<p class="p1"><span class="Apple-converted-space">                </span>let userCoords = { lat: null, lon: null };</p>
-<p class="p1"><span class="Apple-converted-space">                </span>// This asks the user for permission to get their location</p>
-<p class="p1"><span class="Apple-converted-space">                </span>navigator.geolocation.getCurrentPosition(position =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>userCoords.lat = position.coords.latitude;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>userCoords.lon = position.coords.longitude;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>console.log("User location captured for weather data.");</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}, () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>console.log("User did not provide location.");</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// --- Ask Form Handler ---</p>
-<p class="p1"><span class="Apple-converted-space">                </span>askForm.addEventListener('submit', async (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>e.preventDefault(); // This stops the page from reloading</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const resultDiv = document.getElementById('ask-result');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = 'Thinking...'; // Show a loading message</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const response = await fetch('/ask', {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>method: 'POST',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>headers: { 'Content-Type': 'application/json' },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>body: JSON.stringify({ query: document.getElementById('ask-query').value })</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const data = await response.json();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = data.answer || data.error;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// --- Identify Form Handler ---</p>
-<p class="p1"><span class="Apple-converted-space">                </span>identifyForm.addEventListener('submit', async (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const resultDiv = document.getElementById('identify-result');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = 'Identifying...';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const formData = new FormData();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>formData.append('image', document.getElementById('image-file').files[0]);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const response = await fetch('/identify', { method: 'POST', body: formData });</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const data = await response.json();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = data.message || data.error;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>// --- Diagnose Form Handler ---</p>
-<p class="p1"><span class="Apple-converted-space">                </span>diagnoseForm.addEventListener('submit', async (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const resultDiv = document.getElementById('diagnose-result');</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = 'Diagnosing...';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const response = await fetch('/diagnose', {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>method: 'POST',</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>headers: { 'Content-Type': 'application/json' },</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>body: JSON.stringify({</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>query: document.getElementById('diagnose-query').value,</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>lat: userCoords.lat, // We send the location we got earlier</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>lon: userCoords.lon</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>})</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const data = await response.json();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>resultDiv.textContent = data.answer || data.error;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/script&gt;</p>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Gardening Assistant&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Flask/Jinja2 static CSS link --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h1&gt;🌱 Gardening Assistant&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="chat-container" class="card"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="input-area"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="query-input" placeholder="Ask a gardening question or identify a plant..."&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="send-button"&gt;Send&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="file" id="image-upload" style="display:none;" accept="image/*"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="upload-button"&gt;Upload Image&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const queryInput = document.getElementById('query-input');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const sendButton = document.getElementById('send-button');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const chatContainer = document.getElementById('chat-container');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const uploadButton = document.getElementById('upload-button');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const imageUploadInput = document.getElementById('image-upload');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>sendButton.addEventListener('click', sendMessage);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>queryInput.addEventListener('keypress', function(event) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (event.key === 'Enter') sendMessage();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>uploadButton.addEventListener('click', () =&gt; imageUploadInput.click());</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>imageUploadInput.addEventListener('change', handleImageUpload);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function appendMessage(text, className) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const msg = document.createElement('div');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>msg.className = 'message ' + className;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>msg.textContent = text;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>chatContainer.appendChild(msg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>chatContainer.scrollTop = chatContainer.scrollHeight;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showInitialGreeting() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage("Hi there! How can I help you with your gardening today?", "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.onload = showInitialGreeting;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function sendMessage() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const userQuery = queryInput.value.trim();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (userQuery === '') return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage(userQuery, "user-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>queryInput.value = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>getGeolocationAndSendMessage(userQuery);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function getGeolocationAndSendMessage(userQuery) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (navigator.geolocation) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>navigator.geolocation.getCurrentPosition(</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>pos =&gt; sendQueryToServer(userQuery, pos.coords.latitude, pos.coords.longitude),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>err =&gt; sendQueryToServer(userQuery, null, null)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>sendQueryToServer(userQuery, null, null);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function sendQueryToServer(userQuery, lat, lon) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const loadingMsg = appendMessage('Thinking...', 'loading-indicator');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const response = await fetch('/ask', {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>method: 'POST',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>headers: {'Content-Type': 'application/json'},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>body: JSON.stringify({ query: userQuery, lat: lat, lon: lon })</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const data = await response.json();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (data.answer) appendMessage(data.answer, "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else appendMessage("Error: " + (data.error || "Unknown error"), "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (error) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appendMessage("An error occurred. Please try again.", "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function handleImageUpload(event) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const file = event.target.files[0];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (!file) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>appendMessage("Image uploaded. Identifying...", "user-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>queryInput.value = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const loadingMsg = appendMessage('Thinking...', 'loading-indicator');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const formData = new FormData();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>formData.append('image', file);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const response = await fetch('/identify', { method: 'POST', body: formData });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const data = await response.json();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (data.message) appendMessage(data.message, "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>else appendMessage("Error: " + (data.error || "Unknown error"), "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} catch (error) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>chatContainer.removeChild(loadingMsg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appendMessage("An error occurred while identifying the plant.", "bot-message");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>
