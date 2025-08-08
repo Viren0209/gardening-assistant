@@ -4,7 +4,9 @@ import openai
 import requests
 import os
 
-app = Flask(__name__)
+# THIS IS THE FIX: Explicitly tell Flask where the templates folder is.
+app = Flask(__name__, template_folder='templates')
+
 CORS(app)
 
 # This part will read the secret keys we add later
@@ -92,7 +94,7 @@ def identify_plant():
 def diagnose_disease():
     data = request.get_json()
     user_query = data.get('query')
-    lat = data.get('lat')
+    lat = data.get('lon')
     lon = data.get('lon')
 
     if not user_query:
