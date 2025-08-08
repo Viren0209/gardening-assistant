@@ -4,8 +4,8 @@ import openai
 import requests
 import os
 
-# THIS IS THE FIX: Explicitly tell Flask where the templates folder is.
-app = Flask(__name__, template_folder='templates')
+# THIS IS THE FINAL FIX: Explicitly define paths for templates AND static files.
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 CORS(app)
 
@@ -94,7 +94,7 @@ def identify_plant():
 def diagnose_disease():
     data = request.get_json()
     user_query = data.get('query')
-    lat = data.get('lon')
+    lat = data.get('lat')
     lon = data.get('lon')
 
     if not user_query:
