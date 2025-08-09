@@ -1,121 +1,156 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-import openai
-import requests
 import os
+import requests
+import openai
 
-# THIS IS THE FINAL FIX: Explicitly define paths for templates AND static files.
+# --- Flask app (templates + static folders) ---
 app = Flask(__name__, template_folder='templates', static_folder='static')
-
 CORS(app)
 
-# This part will read the secret keys we add later
-openai.api_key = os.getenv("OPENAI_API_KEY")
-PLANTNET_API_KEY = os.getenv("PLANTNET_API_KEY")
+# --- Secrets from environment (Render/Local) ---
+OPENAI_API_KEY     = os.getenv("OPENAI_API_KEY")
+PLANTNET_API_KEY   = os.getenv("PLANTNET_API_KEY")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
-# ---------- Helper Function for Weather ----------
-# A small reusable function to get weather data
+# Configure OpenAI client (older SDK style to stay compatible with your setup)
+openai.api_key = OPENAI_API_KEY
+
+# ---------- Helpers ----------
+
 def get_weather_data(lat, lon):
+    """Return a short weather string or a fallback message."""
     if not lat or not lon:
         return "Weather data not available (location not provided)."
-
-    url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}&units=metric"
     try:
-        response = requests.get(url)
-        response.raise_for_status()
-        data = response.json()
-        temp = data['main']['temp']
-        weather = data['weather'][0]['description']
-        return f"Current weather: {temp}°C, {weather}."
-    except requests.exceptions.RequestException as e:
-        print(f"Weather API error: {e}")
-        return "Could not fetch weather data."
-
-# ---------- Main Route to Serve the Webpage ----------
-# When a user visits our website, this function sends them the index.html file
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-# ---------- API Route for General Questions ----------
-@app.route('/ask', methods=['POST'])
-def ask_gpt():
-    data = request.get_json()
-    user_query = data.get('query')
-
-    if not user_query:
-        return jsonify({'error': 'No query provided'}), 400
-
-    try:
-        response = openai.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "You are a friendly and practical gardening expert."},
-                {"role": "user", "content": user_query}
-            ]
+        url = (
+            "https://api.openweathermap.org/data/2.5/weather"
+            f"?lat={lat}&lon={lon}&appid={OPENWEATHER_API_KEY}&units=metric"
         )
-        answer = response.choices[0].message.content
-        return jsonify({'answer': answer})
+        r = requests.get(url, timeout=15)
+        r.raise_for_status()
+        data = r.json()
+        temp = data["main"]["temp"]
+        desc = data["weather"][0]["description"]
+        hum  = data["main"]["humidity"]
+        return f"Current weather: {temp}°C, {desc}, humidity {hum}%."
     except Exception as e:
-        return jsonify({'error': f'OpenAI API call failed: {e}'}), 500
+        print("Weather error:", e)
+        return "Weather service unavailable."
 
-# ---------- API Route for Plant Identification ----------
-@app.route('/identify', methods=['POST'])
-def identify_plant():
-    if 'image' not in request.files:
-        return jsonify({'error': 'No image file uploaded'}), 400
+def ask_openai(system_msg, user_msg):
+    """Call OpenAI Chat Completions and return text, or raise."""
+    resp = openai.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": system_msg},
+            {"role": "user",   "content": user_msg},
+        ],
+        temperature=0.5,
+    )
+    return resp.choices[0].message.content
 
-    image = request.files['image']
-    url = f"https://my-api.plantnet.org/v2/identify/all?api-key={PLANTNET_API_KEY}"
+# ---------- Routes ----------
+
+@app.route("/", methods=["GET"])
+def home():
+    """Serve the UI. This MUST use render_template so the browser renders HTML (not raw text)."""
+    return render_template("index.html")
+
+
+@app.route("/ask", methods=["POST"])
+def ask():
+    """Free-form gardening Q&A (optionally weather-aware)."""
+    data = request.get_json(silent=True) or {}
+    query = data.get("query", "").strip()
+    lat   = data.get("lat")
+    lon   = data.get("lon")
+
+    if not query:
+        return jsonify({"error": "No query provided."}), 400
 
     try:
-        files = {'images': (image.filename, image.read(), image.content_type)}
-        response = requests.post(url, files=files)
-        response.raise_for_status()
-        result = response.json()
+        weather = get_weather_data(lat, lon)
+        prompt = f"{weather}\n\nUser question: {query}"
+        system = (
+            "You are a friendly, practical gardening expert. "
+            "Give concise, step-by-step, India-friendly advice. "
+            "Include varieties, timing, and simple actions."
+        )
+        answer = ask_openai(system, prompt)
+        return jsonify({"answer": answer})
+    except Exception as e:
+        print("OpenAI /ask error:", e)
+        return jsonify({"error": "AI response failed."}), 500
 
-        if not result.get('results'):
-            return jsonify({'error': 'Plant could not be identified. Try a clearer image.'})
 
-        top_result = result['results'][0]
-        plant_name = top_result['species']['scientificNameWithoutAuthor']
-        common_names = ", ".join(top_result['species'].get('commonNames', ['N/A']))
-        score = top_result['score']
+@app.route("/identify", methods=["POST"])
+def identify():
+    """Identify a plant from an uploaded image using PlantNet."""
+    if "image" not in request.files:
+        return jsonify({"error": "No image file uploaded."}), 400
+
+    image = request.files["image"]
+    if image.filename == "":
+        return jsonify({"error": "Empty filename."}), 400
+
+    try:
+        api_url = f"https://my-api.plantnet.org/v2/identify/all?api-key={PLANTNET_API_KEY}"
+        # PlantNet expects field name 'images'
+        files = {"images": (image.filename, image.stream, image.mimetype)}
+        resp = requests.post(api_url, files=files, timeout=60)
+        resp.raise_for_status()
+        result = resp.json()
+
+        if not result.get("results"):
+            return jsonify({"error": "No plant identified. Try a clearer photo."}), 404
+
+        top = result["results"][0]
+        sci = top["species"].get("scientificNameWithoutAuthor") or top["species"].get("scientificName")
+        common = top["species"].get("commonNames", [])
+        score = top.get("score", 0)
 
         return jsonify({
-            'message': f"Identified: {plant_name}\nCommon Names: {common_names}\nConfidence: {score:.2%}"
+            "scientific_name": sci,
+            "common_names": common,
+            "confidence": round(float(score) * 100, 2)
         })
+    except requests.HTTPError as e:
+        print("PlantNet HTTP error:", e, getattr(e.response, "text", ""))
+        return jsonify({"error": "PlantNet API error."}), 502
     except Exception as e:
-        return jsonify({'error': f'PlantNet API call failed: {e}'}), 500
+        print("PlantNet general error:", e)
+        return jsonify({"error": "Plant identification failed."}), 500
 
-# ---------- API Route for Disease Diagnosis ----------
-@app.route('/diagnose', methods=['POST'])
-def diagnose_disease():
-    data = request.get_json()
-    user_query = data.get('query')
-    lat = data.get('lat')
-    lon = data.get('lon')
 
-    if not user_query:
-        return jsonify({'error': 'No description provided'}), 400
+@app.route("/diagnose", methods=["POST"])
+def diagnose():
+    """Describe symptoms to get likely disease + actions (weather-aware)."""
+    data = request.get_json(silent=True) or {}
+    desc = data.get("query", "").strip()
+    lat  = data.get("lat")
+    lon  = data.get("lon")
 
-    weather_info = get_weather_data(lat, lon)
-    full_prompt = f"User's location context: {weather_info}\n\nUser's observation: '{user_query}'"
+    if not desc:
+        return jsonify({"error": "No description provided."}), 400
 
     try:
-        response = openai.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": (
-                    "You are a plant disease expert. Based on the user's description and local weather, "
-                    "diagnose the issue. Provide a clear, beginner-friendly answer including:\n"
-                    "- Possible Cause\n- Recommended Actions (organic and chemical options)"
-                )},
-                {"role": "user", "content": full_prompt}
-            ]
+        weather = get_weather_data(lat, lon)
+        prompt = (
+            f"{weather}\n\nUser observation: {desc}\n\n"
+            "Return a short diagnosis with:\n"
+            "- Likely cause/disease\n- Key symptoms\n- Immediate actions\n"
+            "- Organic & chemical options (with common actives)\n- Prevention tips"
         )
-        diagnosis = response.choices[0].message.content
-        return jsonify({'answer': diagnosis})
+        system = "You are a plant pathology expert for home gardeners. Keep it simple and safe."
+        answer = ask_openai(system, prompt)
+        return jsonify({"answer": answer})
     except Exception as e:
-        return jsonify({'error': f'Diagnosis failed: {e}'}), 500
+        print("OpenAI /diagnose error:", e)
+        return jsonify({"error": "Diagnosis failed."}), 500
+
+
+# Local debug (Render uses gunicorn, so this block is ignored there)
+if __name__ == "__main__":
+    # Bind to 0.0.0.0 so it’s reachable in containers; default port 5000.
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
